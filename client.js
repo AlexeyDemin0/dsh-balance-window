@@ -15,7 +15,10 @@
  * key itself never reaches the browser.
  */
 window.__ModuleLoader__.load({
-  id: 'dsh-balance-window',
+  // This id must equal the package name: a client bundle whose id differs from
+  // its package loads without registering, which fails the whole entry with
+  // `client-modules: could not load … loaded without registering`.
+  id: '@alexey_demin/dsh-balance-window',
   factory(require) {
     const React = require('react')
     const h = React.createElement

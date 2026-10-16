@@ -4,6 +4,27 @@ All notable changes to this plugin are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] — 2026-10-17
+
+### Fixed
+
+- `client.js` registers its lazy factory under the package's published name. It
+  still called `__ModuleLoader__.load({ id: 'dsh-balance-window' })` after the
+  package moved into the scope, and a client bundle whose id does not match its
+  package name loads without registering — which failed the whole entry with
+  `client-modules: could not load "@alexey_demin/dsh-balance-window" … loaded
+  without registering`. 0.1.1 fixed the Host row name but missed this one, so
+  neither 0.1.0 nor 0.1.1 produced a visible chip.
+- The account-fallback client identity now reports the published package name
+  instead of the pre-scope one.
+
+### Added
+
+- `scripts/check-client-id.mjs`, wired into `npm test`, `npm run check` and
+  `prepublishOnly`: it evaluates `client.js` with a stub `__ModuleLoader__` and
+  fails when the registered id differs from the package name — exactly the 0.1.2
+  bug, and the reason 0.1.0 and 0.1.1 shipped a bundle that could not register.
+
 ## [0.1.1] — 2026-10-17
 
 ### Fixed
@@ -43,3 +64,5 @@ All notable changes to this plugin are documented here. The format follows
 [0.1.0]: https://github.com/AlexeyDemin0/dsh-balance-window/releases/tag/v0.1.0
 
 [0.1.1]: https://github.com/AlexeyDemin0/dsh-balance-window/releases/tag/v0.1.1
+
+[0.1.2]: https://github.com/AlexeyDemin0/dsh-balance-window/releases/tag/v0.1.2

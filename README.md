@@ -163,9 +163,10 @@ dsh plugin --profile web add link:/path/to/dsh-balance-window
 
 The Host loads a plugin's module once per process, so restart `dsh web` after
 editing `host.js`. `client.js` is served to the page on every load, so a page
-reload is enough there. `npm test` (or `npm run check`) is the whole syntax gate.
-The row name in `cordis.patch.yml` is the package name — change one and you must
-change the other.
+reload is enough there. `npm test` (or `npm run check`) runs the whole gate: a
+`node --check` on both halves and `scripts/check-client-id.mjs`. Two names must
+stay in step with the package name, and the test enforces both: the row name in
+`cordis.patch.yml` and the id `client.js` passes to `__ModuleLoader__.load`.
 
 ## Support
 

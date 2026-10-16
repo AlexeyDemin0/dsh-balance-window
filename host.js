@@ -19,6 +19,9 @@
  * @module dsh-balance-window
  */
 
+/** Package identity, reported to the account service as this client's version. */
+const PKG_NAME = '@alexey_demin/dsh-balance-window'
+
 /** Official wallet endpoint; returns `balance_infos[]` for the key's account. */
 const BALANCE_URL = 'https://api.deepseek.com/user/balance'
 
@@ -131,7 +134,7 @@ export function apply(ctx, config = {}) {
       return { ok: false, code: 'NO_ACCOUNT', message: 'no DeepSeek account is signed in on this Host' }
     }
     const client = {
-      version: 'dsh-balance-window',
+      version: PKG_NAME,
       locale: 'en',
       timezoneOffsetSeconds: -new Date().getTimezoneOffset() * 60,
     }
