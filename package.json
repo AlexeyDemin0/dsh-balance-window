@@ -1,6 +1,6 @@
 {
-  "name": "dsh-balance-window",
-  "version": "0.1.0",
+  "name": "@alexey_demin/dsh-balance-window",
+  "version": "0.1.1",
   "description": "A fixed DeepSeek Harness sidebar chip with your DeepSeek balance and the estimated cost of the last turn, plus a hover breakdown.",
   "keywords": [
     "dsh",
@@ -12,23 +12,25 @@
     "cost",
     "sidebar"
   ],
-  "type": "module",
-  "license": "MIT",
-  "author": "Alexey Demin <AlexeyDeminA@gmail.com>",
   "homepage": "https://github.com/AlexeyDemin0/dsh-balance-window#readme",
+  "bugs": {
+    "url": "https://github.com/AlexeyDemin0/dsh-balance-window/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AlexeyDemin0/dsh-balance-window.git"
   },
-  "bugs": {
-    "url": "https://github.com/AlexeyDemin0/dsh-balance-window/issues"
-  },
-  "icon": "./icon.svg",
+  "license": "MIT",
+  "author": "Alexey Demin <AlexeyDeminA@gmail.com>",
+  "type": "module",
   "exports": {
     ".": "./host.js",
     "./client": "./client.js",
     "./package.json": "./package.json",
     "./locale/*.json": "./locale/*.json"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "host.js",
@@ -39,6 +41,16 @@
     "CHANGELOG.md",
     "README.md"
   ],
+  "scripts": {
+    "check": "node --check host.js && node --check client.js",
+    "test": "npm run check",
+    "prepublishOnly": "npm run check"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh": ">=0.2.0-rc.2",
+    "react": "^18.2.0"
+  },
+  "icon": "./icon.svg",
   "dsh": {
     "engines": {
       "dsh": ">=0.2.0-rc.2"
@@ -54,9 +66,5 @@
         "@deepseek-ai/dsh-client-ui-sidebar"
       ]
     }
-  },
-  "peerDependencies": {
-    "@deepseek-ai/dsh": ">=0.2.0-rc.2",
-    "react": "^18.2.0"
   }
 }

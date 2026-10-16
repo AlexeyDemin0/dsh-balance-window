@@ -4,6 +4,22 @@ All notable changes to this plugin are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] — 2026-10-17
+
+### Fixed
+
+- The bundle row now addresses the Host half by the package's published name,
+  `@alexey_demin/dsh-balance-window`. In 0.1.0 the row still said
+  `dsh-balance-window`, which no npm install can resolve, so the plugin failed to
+  activate for anyone installing the published package.
+
+### Changed
+
+- `package.json`: dropped the misleading `main` (the ESM entry is `exports["."]`),
+  replaced the `npm init` stub test script with real syntax gates
+  (`check`/`test`/`prepublishOnly`), and added `publishConfig.access: public` so a
+  scoped publish cannot silently land as restricted.
+
 ## [0.1.0] — 2026-10-16
 
 ### Added
@@ -25,3 +41,5 @@ All notable changes to this plugin are documented here. The format follows
   timeout, price table, peak windows, USD→CNY rate, and turn retention.
 
 [0.1.0]: https://github.com/AlexeyDemin0/dsh-balance-window/releases/tag/v0.1.0
+
+[0.1.1]: https://github.com/AlexeyDemin0/dsh-balance-window/releases/tag/v0.1.1

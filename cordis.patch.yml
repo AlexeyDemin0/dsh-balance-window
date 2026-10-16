@@ -1,13 +1,15 @@
 # dsh-balance-window — bundle patch.
 #
-# The row is the Host half; the Client half rides the `dsh.client` manifest
-# section of package.json and renders the window in `shell.overlay`.
+# The row is the Host half (`host.js`); the Client half rides the `dsh.client`
+# manifest section of package.json and renders the chip in
+# `sidebar.footer.action`. The row name is the package name, so it must stay in
+# step with `name` in package.json.
 #
-# Every field below is optional; the defaults live in index.js and are listed
-# in README.md. Uncomment and edit the `config:` block to override them.
+# Every field below is optional; the defaults live in host.js and are listed in
+# README.md. Uncomment and edit the `config:` block to override them.
 - insert:
     - id: balance-window
-      name: dsh-balance-window
+      name: '@alexey_demin/dsh-balance-window'
       # config:
       #   # Which stored credential holds the DeepSeek API key.
       #   apiKeyRef: DEEPSEEK_API_KEY
