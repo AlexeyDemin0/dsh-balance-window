@@ -1,5 +1,9 @@
 # dsh-balance-window
 
+[![npm version](https://img.shields.io/npm/v/@alexey_demin/dsh-balance-window.svg)](https://www.npmjs.com/package/@alexey_demin/dsh-balance-window)
+[![license](https://img.shields.io/npm/l/@alexey_demin/dsh-balance-window.svg)](LICENSE)
+[![DeepSeek Harness](https://img.shields.io/badge/DeepSeek%20Harness-%3E%3D0.2.0--rc.2-247bbf.svg)](#requirements)
+
 A fixed chip in the DeepSeek Harness sidebar foot, right beside **Settings**: the
 wallet balance `platform.deepseek.com` shows and what the last turn cost. Hover
 it (or focus it with the keyboard) and an info panel opens above it with the
@@ -51,15 +55,15 @@ Russian and Chinese.
 Through the Plugin Manager / market UI, or from a shell:
 
 ```sh
+# from npm
+dsh plugin --profile web add @alexey_demin/dsh-balance-window
+
 # from git
 dsh plugin --profile web add github:AlexeyDemin0/dsh-balance-window
-
-# from npm, once the package is published
-dsh plugin --profile web add dsh-balance-window
 ```
 
 Then reload the page: the chip appears in the sidebar foot next to Settings.
-Uninstall with `dsh plugin --profile web remove dsh-balance-window`.
+Uninstall with `dsh plugin --profile web remove @alexey_demin/dsh-balance-window`.
 
 ## The hover panel
 
@@ -137,6 +141,17 @@ See the commented block in [`cordis.patch.yml`](cordis.patch.yml); defaults are
 - Long numbers are ellipsised in the rail; the panel always carries the exact
   values.
 
+## Troubleshooting
+
+| Symptom                                                   | Cause and fix                                                                                                                                                                                 |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The chip shows `—` with a yellow dot                      | The Host could not read the wallet. Put an API key in Settings → Models (stored as `DEEPSEEK_API_KEY`), or sign in to a DeepSeek account on Desktop. The hover panel carries the exact error. |
+| The chip disappeared after installing or toggling plugins | The Host loads a plugin's module once per process. Restart `dsh web`.                                                                                                                         |
+| Balance is right, turn cost is `—`                        | No turn has finished since the plugin loaded. The first completed turn fills it in.                                                                                                           |
+| Turn cost differs from the platform dashboard             | It is an estimate, not a billing record — see the caveats above.                                                                                                                              |
+| The chip is in the wrong language                         | It follows the UI locale; English, Russian and Chinese copy ship with the plugin.                                                                                                             |
+| I want it somewhere else, or hidden                       | Not supported by design: the chip is a fixed occupant of the sidebar foot, so it cannot be moved, collapsed or dismissed. Fork the plugin and register into another slot if you need that.    |
+
 ## Development
 
 There is nothing to build: `host.js` and `client.js` ship as they are, so a
@@ -148,8 +163,13 @@ dsh plugin --profile web add link:/path/to/dsh-balance-window
 
 The Host loads a plugin's module once per process, so restart `dsh web` after
 editing `host.js`. `client.js` is served to the page on every load, so a page
-reload is enough there. `node --check host.js client.js` is the whole syntax
-gate.
+reload is enough there. `npm test` (or `npm run check`) is the whole syntax gate.
+The row name in `cordis.patch.yml` is the package name — change one and you must
+change the other.
+
+## Support
+
+Questions and bug reports: [issues](https://github.com/AlexeyDemin0/dsh-balance-window/issues).
 
 ## License
 
