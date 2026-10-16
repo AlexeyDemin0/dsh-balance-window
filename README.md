@@ -15,19 +15,18 @@ sidebar foot, expanded:                56px rail:
 
 ```
         ┌──────────────────────────────────────┐
-        │ БАЛАНС                               │
+        │ BALANCE                              │
         │ $4.76                                │
-        │ пополнение $4.76                     │
+        │ topped up $4.76                      │
         │ ──────────────────────────────────── │
-        │ Последний ход #1            $0.0264  │
-        │ шагов: 24 · 5.23M токенов ·          │
+        │ Last turn #2                $0.0264  │
+        │ 24 steps · 5.23M tokens ·            │
         │ deepseek-flash                       │
         │ ──────────────────────────────────── │
-        │ Сегодня      $0.0264 · ходов: 1      │
-        │ 5.23M токенов                        │
-        │ Обновлено 17:41:07 · оценка по       │
-        │ опубликованным тарифам · щелчок —    │
-        │ обновить                             │
+        │ Today        $0.0264 · 2 turns       │
+        │ 5.23M tokens                         │
+        │ Updated 17:41:07 · estimate at       │
+        │ published rates · click to refresh   │
         └──────────────────────────────────────┘
    ⚙ Settings   [ ● $4.76  $0.0264 ]
 ```
@@ -35,7 +34,8 @@ sidebar foot, expanded:                56px rail:
 The chip is a slot occupant of the sidebar column, not a floating window: it
 cannot be dragged, collapsed, dismissed or moved, and it stays visible in the
 56px rail too. Clicking it forces a balance refresh (with `≈` in front of the
-turn figure while that turn is still running).
+turn figure while that turn is still running). Its copy ships in English,
+Russian and Chinese.
 
 ## Requirements
 
@@ -51,11 +51,8 @@ turn figure while that turn is still running).
 Through the Plugin Manager / market UI, or from a shell:
 
 ```sh
-# from git (no npm publish required)
+# from git
 dsh plugin --profile web add github:AlexeyDemin0/dsh-balance-window
-
-# from a local checkout, for development
-dsh plugin --profile web add link:/path/to/dsh-balance-window
 
 # from npm, once the package is published
 dsh plugin --profile web add dsh-balance-window
@@ -63,10 +60,6 @@ dsh plugin --profile web add dsh-balance-window
 
 Then reload the page: the chip appears in the sidebar foot next to Settings.
 Uninstall with `dsh plugin --profile web remove dsh-balance-window`.
-
-Editing `host.js` requires a `dsh web` restart (the Host caches one module
-generation per plugin per process); editing `client.js` is picked up by a page
-reload.
 
 ## The hover panel
 
@@ -79,7 +72,7 @@ reload.
 - Wrapped in an error boundary: a panel render failure logs to the console and
   drops only the panel, never the chip.
 - It shows: balance, recharge/granted split, the newest turn (number, cost,
-  tokens, steps, model, `пик` when the peak tariff applied), today's total and
+  tokens, steps, model, `peak` when the peak tariff applied), today's total and
   turn count, the read timestamp, the estimate disclaimer, and any read error.
 
 ## Where the numbers come from
@@ -88,7 +81,7 @@ reload.
 | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Balance (and the recharge/granted split) | Host `GET https://api.deepseek.com/user/balance` with the stored `DEEPSEEK_API_KEY`; falls back to the `deepseekAccount` service when only an account login exists (Desktop).            |
 | Last turn cost                           | Host fold over durable `assistant/message` usage records (`inputTokens` = cache miss, `cacheReadTokens` = cache hit, `outputTokens` includes reasoning), priced with the official rates. |
-| `Сегодня`                                | Sum of the turns folded since the plugin loaded — or since local midnight, whichever is later; the accumulator resets when the local date changes.                                       |
+| `Today`                                  | Sum of the turns folded since the plugin loaded — or since local midnight, whichever is later; the accumulator resets when the local date changes.                                       |
 
 The API key stays on the Host: the browser only receives the JSON that
 `/balance-window/state` returns.
@@ -144,19 +137,19 @@ See the commented block in [`cordis.patch.yml`](cordis.patch.yml); defaults are
 - Long numbers are ellipsised in the rail; the panel always carries the exact
   values.
 
-## Publishing
+## Development
+
+There is nothing to build: `host.js` and `client.js` ship as they are, so a
+checkout installs in place.
 
 ```sh
-git remote add origin git@github.com:AlexeyDemin0/dsh-balance-window.git
-git push -u origin main
-
-# optional, if you also want it on npm
-npm publish
+dsh plugin --profile web add link:/path/to/dsh-balance-window
 ```
 
-Bump `version` in `package.json` and add a `CHANGELOG.md` entry per release. Keep
-the `dsh.engines.dsh` range honest — DSH validates it against `dsh --version` both
-when the plugin is installed and when the profile boots.
+The Host loads a plugin's module once per process, so restart `dsh web` after
+editing `host.js`. `client.js` is served to the page on every load, so a page
+reload is enough there. `node --check host.js client.js` is the whole syntax
+gate.
 
 ## License
 
