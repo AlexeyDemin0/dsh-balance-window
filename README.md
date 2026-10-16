@@ -39,11 +39,11 @@ turn figure while that turn is still running).
 
 ## Requirements
 
-* DeepSeek Harness `>= 0.2.0-rc.2` running the **Web UI** (`dsh web`) — the visible
+- DeepSeek Harness `>= 0.2.0-rc.2` running the **Web UI** (`dsh web`) — the visible
   half is a `platform: web` client plugin.
-* A stored `DEEPSEEK_API_KEY` (Settings → Models). On Desktop an account login
+- A stored `DEEPSEEK_API_KEY` (Settings → Models). On Desktop an account login
   works too: the Host falls back to the `deepseekAccount` service.
-* Nothing else: no build step and no runtime dependencies, `host.js` and
+- Nothing else: no build step and no runtime dependencies, `host.js` and
   `client.js` ship as they are.
 
 ## Install
@@ -70,25 +70,25 @@ reload.
 
 ## The hover panel
 
-* Opens on `mouseenter` and on keyboard focus; closes 180 ms after the pointer
+- Opens on `mouseenter` and on keyboard focus; closes 180 ms after the pointer
   leaves, and immediately on blur. Moving the pointer onto the panel keeps it
   open, and its numbers can be selected and copied.
-* Anchored above the chip with `position: fixed` coordinates taken from the
+- Anchored above the chip with `position: fixed` coordinates taken from the
   chip's viewport rect — the sidebar column clips its scrolled content, so an
   in-flow popover would be cut off. It re-anchors on window resize.
-* Wrapped in an error boundary: a panel render failure logs to the console and
+- Wrapped in an error boundary: a panel render failure logs to the console and
   drops only the panel, never the chip.
-* It shows: balance, recharge/granted split, the newest turn (number, cost,
+- It shows: balance, recharge/granted split, the newest turn (number, cost,
   tokens, steps, model, `пик` when the peak tariff applied), today's total and
   turn count, the read timestamp, the estimate disclaimer, and any read error.
 
 ## Where the numbers come from
 
-| Figure | Source |
-|---|---|
-| Balance (and the recharge/granted split) | Host `GET https://api.deepseek.com/user/balance` with the stored `DEEPSEEK_API_KEY`; falls back to the `deepseekAccount` service when only an account login exists (Desktop). |
-| Last turn cost | Host fold over durable `assistant/message` usage records (`inputTokens` = cache miss, `cacheReadTokens` = cache hit, `outputTokens` includes reasoning), priced with the official rates. |
-| `Сегодня` | Sum of the turns folded since the plugin loaded — or since local midnight, whichever is later; the accumulator resets when the local date changes. |
+| Figure                                   | Source                                                                                                                                                                                   |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Balance (and the recharge/granted split) | Host `GET https://api.deepseek.com/user/balance` with the stored `DEEPSEEK_API_KEY`; falls back to the `deepseekAccount` service when only an account login exists (Desktop).            |
+| Last turn cost                           | Host fold over durable `assistant/message` usage records (`inputTokens` = cache miss, `cacheReadTokens` = cache hit, `outputTokens` includes reasoning), priced with the official rates. |
+| `Сегодня`                                | Sum of the turns folded since the plugin loaded — or since local midnight, whichever is later; the accumulator resets when the local date changes.                                       |
 
 The API key stays on the Host: the browser only receives the JSON that
 `/balance-window/state` returns.
@@ -96,21 +96,21 @@ The API key stays on the Host: the browser only receives the JSON that
 **The per-turn figure is an estimate.** It is `tokens × published price`, not a
 billing record:
 
-* Search/Fetch API fees ($0.75 per 1,000 requests) are not counted.
-* Chinese public holidays are not modelled, so a turn inside a peak window on a
+- Search/Fetch API fees ($0.75 per 1,000 requests) are not counted.
+- Chinese public holidays are not modelled, so a turn inside a peak window on a
   holiday is priced at the peak (double) rate.
-* Compaction tokens and any provider-side accounting the harness does not log
+- Compaction tokens and any provider-side accounting the harness does not log
   are invisible here.
-* The wallet balance is the one authoritative figure — the API balance and the
+- The wallet balance is the one authoritative figure — the API balance and the
   fold will disagree by exactly these effects.
 
 Default prices come from <https://api-docs.deepseek.com/quick_start/pricing>
 (off-peak USD per 1M tokens):
 
-| family | cache hit | cache miss | output |
-|---|---|---|---|
-| `flash` (`deepseek-flash`, …) | 0.003 | 0.15 | 0.6 |
-| `pro` (`deepseek-v4-pro`, `*reasoner*`) | 0.022 | 0.66 | 1.98 |
+| family                                  | cache hit | cache miss | output |
+| --------------------------------------- | --------- | ---------- | ------ |
+| `flash` (`deepseek-flash`, …)           | 0.003     | 0.15       | 0.6    |
+| `pro` (`deepseek-v4-pro`, `*reasoner*`) | 0.022     | 0.66       | 1.98   |
 
 Peak = 01:00–04:00 and 06:00–10:00 UTC, Monday–Friday, at ×2. A wallet in CN¥
 is converted with `usdToCny` (default 7.2).
@@ -125,23 +125,23 @@ See the commented block in [`cordis.patch.yml`](cordis.patch.yml); defaults are
 
 ## Layout
 
-* Slot: `sidebar.footer.action` (the row beside Settings at the sidebar foot),
+- Slot: `sidebar.footer.action` (the row beside Settings at the sidebar foot),
   entry id `balance-window`, order 20. The owner passes `wide` — `false` in the
   56px rail — so the chip lays out as one line when there is room and as two
   stacked numbers when there is not.
-* Styles use theme tokens only (`--dsw-alias-*`), so light and dark themes both
+- Styles use theme tokens only (`--dsw-alias-*`), so light and dark themes both
   read correctly; no Harness Client package is imported.
-* The chip polls its Host route every 10 s while the tab is visible; the Host
+- The chip polls its Host route every 10 s while the tab is visible; the Host
   caches upstream balance reads for `refreshMs`, and clicking the chip forces
   one.
 
 ## Limits
 
-* The "last turn" is the newest completed turn across all sessions (or the turn
+- The "last turn" is the newest completed turn across all sessions (or the turn
   currently running), not the sidebar's selected session.
-* A turn appears when `turn/end` is logged, so the turn you are watching shows
+- A turn appears when `turn/end` is logged, so the turn you are watching shows
   as the `≈` figure while it runs.
-* Long numbers are ellipsised in the rail; the panel always carries the exact
+- Long numbers are ellipsised in the rail; the panel always carries the exact
   values.
 
 ## Publishing
