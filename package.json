@@ -1,0 +1,62 @@
+{
+  "name": "dsh-balance-window",
+  "version": "0.1.0",
+  "description": "A fixed DeepSeek Harness sidebar chip with your DeepSeek balance and the estimated cost of the last turn, plus a hover breakdown.",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek",
+    "deepseek-harness",
+    "balance",
+    "usage",
+    "cost",
+    "sidebar"
+  ],
+  "type": "module",
+  "license": "MIT",
+  "author": "Alexey Demin <AlexeyDeminA@gmail.com>",
+  "homepage": "https://github.com/AlexeyDemin0/dsh-balance-window#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexeyDemin0/dsh-balance-window.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AlexeyDemin0/dsh-balance-window/issues"
+  },
+  "icon": "./icon.svg",
+  "exports": {
+    ".": "./host.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
+  },
+  "files": [
+    "host.js",
+    "client.js",
+    "cordis.patch.yml",
+    "icon.svg",
+    "locale/*.json",
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "dsh": {
+    "engines": {
+      "dsh": ">=0.2.0-rc.2"
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-sidebar"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh": ">=0.2.0-rc.2",
+    "react": "^18.2.0"
+  }
+}

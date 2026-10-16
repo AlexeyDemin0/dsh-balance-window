@@ -1,0 +1,30 @@
+# dsh-balance-window — bundle patch.
+#
+# The row is the Host half; the Client half rides the `dsh.client` manifest
+# section of package.json and renders the window in `shell.overlay`.
+#
+# Every field below is optional; the defaults live in index.js and are listed
+# in README.md. Uncomment and edit the `config:` block to override them.
+- insert:
+    - id: balance-window
+      name: dsh-balance-window
+      # config:
+      #   # Which stored credential holds the DeepSeek API key.
+      #   apiKeyRef: DEEPSEEK_API_KEY
+      #   # Balance/credential cache lifetime in milliseconds.
+      #   refreshMs: 60000
+      #   # Upstream request timeout in milliseconds.
+      #   timeoutMs: 8000
+      #   # Off-peak USD price per 1M tokens (official DeepSeek API pricing).
+      #   prices:
+      #     flash: { hit: 0.003, miss: 0.15, out: 0.6 }
+      #     pro: { hit: 0.022, miss: 0.66, out: 1.98 }
+      #   # Peak = these UTC windows on weekdays, Monday..Friday.
+      #   peak:
+      #     multiplier: 2
+      #     utcWindows: [[1, 4], [6, 10]]
+      #     weekdaysOnly: true
+      #   # Used only when the wallet currency is CNY: cny = usd * usdToCny.
+      #   usdToCny: 7.2
+      #   # Completed turns kept per session and in the global recent list.
+      #   keepTurns: 20
